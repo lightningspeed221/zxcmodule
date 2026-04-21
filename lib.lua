@@ -2963,11 +2963,14 @@ end
 function sections:playerlist(props)
     local name = props.name or "Players"
     local callback = props.callback or function() end
-    local height = props.height or 150
+    local size = props.size or props.Size or 150 -- Height of the player list container
+    local maxHeight = props.maxHeight or props.MaxHeight or 300 -- Maximum height before scrolling
+    
+    local finalHeight = math.min(size, maxHeight)
     
     local container = utility.new("Frame", {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, height),
+        Size = UDim2.new(1, 0, 0, finalHeight),
         Parent = self.content
     })
     
@@ -3007,13 +3010,16 @@ function sections:playerlist(props)
     local selectedPlayer = nil
     local selectedButton = nil
     
+    -- Button height (you can also make this configurable)
+    local buttonHeight = props.buttonHeight or props.ButtonHeight or 25
+    
     -- Function to create player button
     local function createPlayerButton(playerName)
         local button = utility.new("TextButton", {
             BackgroundColor3 = Color3.fromRGB(30, 30, 30),
             BorderColor3 = Color3.fromRGB(12, 12, 12),
             BorderSizePixel = 1,
-            Size = UDim2.new(1, -4, 0, 25),
+            Size = UDim2.new(1, -4, 0, buttonHeight),
             Text = playerName,
             TextColor3 = Color3.fromRGB(255,255,255),
             TextSize = self.library.textsize,
@@ -3053,7 +3059,7 @@ function sections:playerlist(props)
         end
         
         -- Update canvas size
-        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, #playerButtons * 27)
+        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, #playerButtons * (buttonHeight + 2))
     end
     
     -- Listen for player joins/leaves
@@ -3070,6 +3076,12 @@ function sections:playerlist(props)
     -- Initial refresh
     refreshPlayerList()
     
+    -- Method to change size dynamically
+    local function setSize(newSize)
+        local newHeight = math.min(newSize, maxHeight)
+        container.Size = UDim2.new(1, 0, 0, newHeight)
+    end
+    
     -- Return methods
     local playerlist = {
         refresh = refreshPlayerList,
@@ -3080,7 +3092,9 @@ function sections:playerlist(props)
                 selectedButton = nil
                 selectedPlayer = nil
             end
-        end
+        end,
+        setSize = setSize,
+        getSize = function() return container.Size.Y.Offset end
     }
     
     self.library.labels[#self.library.labels+1] = title
