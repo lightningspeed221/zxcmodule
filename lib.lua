@@ -984,7 +984,7 @@ function library:page(props)
 			ScrollBarImageTransparency = 1,
 			ScrollBarImageColor3 = Color3.fromRGB(0,0,0),
 			ScrollBarThickness = 0,
-			ClipsDescendants = false,
+			ClipsDescendants = true,
 			VerticalScrollBarInset = "None",
 			VerticalScrollBarPosition = "Right",
 			Parent = pageholder
@@ -1013,7 +1013,7 @@ function library:page(props)
 			ScrollBarImageTransparency = 1,
 			ScrollBarImageColor3 = Color3.fromRGB(0,0,0),
 			ScrollBarThickness = 0,
-			ClipsDescendants = false,
+			ClipsDescendants = true,
 			VerticalScrollBarInset = "None",
 			VerticalScrollBarPosition = "Right",
 			Parent = pageholder
@@ -2409,6 +2409,7 @@ function sections:buttonbox(props)
 			TextSize = self.library.textsize,
 			TextStrokeTransparency = 0,
 			TextXAlignment = "Right",
+			TextWrapped = true, -- Add this line
 			ClipsDescendants = true,
 			Parent = outline
 		}
@@ -2425,6 +2426,7 @@ function sections:buttonbox(props)
 			TextColor3 = Color3.fromRGB(255,255,255),
 			TextSize = self.library.textsize,
 			TextStrokeTransparency = 0,
+			TextWrapped = true, -- Add this line
 			TextXAlignment = "Left",
 			Parent = buttonboxholder
 		}
